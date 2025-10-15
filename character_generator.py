@@ -7,7 +7,7 @@ from datetime import datetime
 class DnDCharacterBot:
     def __init__(self):
         self.ifttt_key = os.environ.get('IFTTT_KEY')
-        self.ifttt_event = 'dnd_character_to_pinterest'
+        self.ifttt_event = os.environ.get('IFTTT_EVENT_NAME', 'dnd_character_to_pinterest')  # Default value
         
         # Karakter ırk ve sınıfları
         self.races = [
