@@ -7,7 +7,7 @@ from datetime import datetime
 class DnDCharacterBot:
     def __init__(self):
         self.ifttt_key = os.environ.get('IFTTT_KEY')
-        self.ifttt_event = 'pinterest_post'
+        self.ifttt_event = 'dnd_character_to_pinterest'
         
         # Karakter ırk ve sınıfları
         self.races = [
@@ -115,11 +115,15 @@ class DnDCharacterBot:
         
         webhook_url = f"https://maker.ifttt.com/trigger/{self.ifttt_event}/with/key/{self.ifttt_key}"
         
-        # IFTTT'ye gönderilecek veri
+        # Pinterest için description hazırla
+        hashtags = "\n\n#DnD #RPG #FantasyArt #CharacterArt #DigitalArt #DungeonsAndDragons #TabletopGaming"
+        description = f"{prompt[:450]}{hashtags}"
+        
+        # IFTTT'ye gönderilecek veri - Pinterest Create Pin format
         data = {
-            'value1': character_name,  # Başlık
-            'value2': prompt[:500],     # Açıklama (Pinterest 500 karakter limiti)
-            'value3': image_url         # Görsel URL
+            'value1': image_url,           # Image URL (value1)
+            'value2': character_name,      # Title (value2)
+            'value3': description          # Description (value3)
         }
         
         try:
