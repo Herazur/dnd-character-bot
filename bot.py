@@ -79,17 +79,17 @@ class DnDCharacterBot:
         try:
             print("📤 IFTTT'ye gönderiliyor...")
 
-            # JSON payload'ını düzelt - doğrudan değerleri kullan
+            # IFTTT Applet'inizdeki parametre isimlerine göre payload
             payload = {
-                "value1": data['title'],
-                "value2": data['image_url'],
-                "value3": data['description']
+                "image url": data['image_url'],  # IFTTT'deki parametre adı
+                "title": data['title'],          # IFTTT'deki parametre adı
+                "description": data['description'] # IFTTT'deki parametre adı
             }
 
             print(f"📊 Gönderilen veriler:")
-            print(f"   Başlık: {data['title']}")
-            print(f"   Görsel URL: {data['image_url']}")
-            print(f"   Açıklama: {data['description'][:100]}...")
+            print(f"   Title: {data['title']}")
+            print(f"   Image URL: {data['image_url']}")
+            print(f"   Description: {data['description'][:100]}...")
 
             response = requests.post(
                 self.ifttt_webhook,
