@@ -31,6 +31,6 @@ jobs:
     
     - name: Generate and Post Character
       env:
-        IFTTT_KEY: ${{ secrets.IFTTT_KEY }}
+        ZAPIER_WEBHOOK_URL: ${{ secrets.ZAPIER_WEBHOOK_URL }}
       run: |
-        python character_generator.py
+        python character_generator_zapier.py
