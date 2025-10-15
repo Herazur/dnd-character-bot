@@ -1,0 +1,24 @@
+{
+  "name": "dnd-character-art-bot",
+  "version": "1.0.0",
+  "description": "Automated D&D character portrait generator using Pollinations.ai and Pinterest",
+  "main": "generate-character.js",
+  "scripts": {
+    "start": "node generate-character.js",
+    "test": "node generate-character.js"
+  },
+  "keywords": [
+    "dnd",
+    "dungeons-and-dragons",
+    "character-art",
+    "ai-art",
+    "pinterest",
+    "automation"
+  ],
+  "author": "Character Art Bot",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "form-data": "^4.0.0"
+  }
+}
