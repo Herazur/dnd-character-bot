@@ -99,17 +99,27 @@ async function postToPinterest(imageUrl, title, description) {
   
   const webhookUrl = `https://maker.ifttt.com/trigger/post_to_pinterest/with/key/${iftttKey}`;
   
+  // Pinterest için kısa açıklama (500 karakter limit)
+  const shortDescription = description.length > 500 
+    ? description.substring(0, 497) + '...' 
+    : description;
+  
   try {
     const response = await axios.post(webhookUrl, {
-      value1: title,           // Pinterest başlık
-      value2: description,     // Pinterest açıklama
-      value3: imageUrl         // Görsel URL
+      value1: title,              // Pinterest başlık
+      value2: shortDescription,   // Pinterest açıklama (kısa)
+      value3: imageUrl            // Görsel URL
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      timeout: 30000
     });
     
     console.log('Pinterest\'e gönderildi:', response.data);
     return true;
   } catch (error) {
-    console.error('IFTTT hatası:', error.message);
+    console.error('IFTTT hatası:', error.response?.data || error.message);
     return false;
   }
 }
