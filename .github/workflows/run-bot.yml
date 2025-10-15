@@ -1,9 +1,9 @@
 name: Run DnD Character Bot
 
 on:
-  workflow_dispatch:  # Manuel tetikleme
+  workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"  # Her 6 saatte bir çalıştırır (UTC)
+    - cron: "0 */6 * * *"  # Her 6 saatte bir (UTC)
 
 jobs:
   run-bot:
@@ -19,9 +19,10 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install requests
 
       - name: Run DnD Character Bot
         env:
-          IFTTT_WEBHOOK_URL: ${{ secrets.IFTTT_WEBHOOK_URL }}
+          IFTTT_EVENT_NAME: ${{ secrets.IFTTT_EVENT_NAME }}
+          IFTTT_KEY: ${{ secrets.IFTTT_KEY }}
         run: python bot.py
