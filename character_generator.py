@@ -137,13 +137,18 @@ class DnDCharacterBot:
         
         # Pinterest için description hazırla
         hashtags = "\n\n#DnD #RPG #FantasyArt #CharacterArt #DigitalArt #DungeonsAndDragons"
-        description = f"{character_name} - {prompt[:400]}{hashtags}"
+        full_description = f"{prompt[:400]}{hashtags}"
         
-        # IFTTT'ye gönderilecek veri - BASİTLEŞTİRİLMİŞ FORMAT
+        # IFTTT Pinterest Pin Format (4 alan):
+        # value1 = Image URL (gerekli)
+        # value2 = Title (gerekli)  
+        # value3 = Description (gerekli)
+        # NOT: Source URL için ek parametre gerekmez, IFTTT otomatik image_url'yi kullanır
+        
         data = {
-            'value1': image_url,           # Photo URL
-            'value2': character_name,      # Pin Title (kısa)
-            'value3': description[:500]    # Pin Description (limit 500)
+            'value1': image_url,              # Image URL
+            'value2': character_name,         # Title
+            'value3': full_description[:500]  # Description (max 500 char)
         }
         
         try:
