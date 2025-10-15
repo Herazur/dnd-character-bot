@@ -6,6 +6,9 @@ on:
     - cron: '0 */6 * * *'
   workflow_dispatch: # Manuel tetikleme için
 
+permissions:
+  contents: write  # Git commit için gerekli
+
 jobs:
   generate-and-post:
     runs-on: ubuntu-latest
@@ -13,6 +16,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -32,7 +37,7 @@ jobs:
     - name: Save generation log
       run: |
         git config --global user.name 'Character Bot'
-        git config --global user.email 'bot@example.com'
+        git config --global user.email 'bot@github.com'
         git add logs/*.json || true
         git commit -m "Generated character $(date +'%Y-%m-%d %H:%M')" || true
         git push || true
