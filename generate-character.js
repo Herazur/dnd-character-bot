@@ -62,19 +62,29 @@ function generateCharacterPrompt() {
 async function generateImage(prompt) {
   // Pollinations.ai URL encode edilmiş prompt kullanır
   const encodedPrompt = encodeURIComponent(prompt);
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&seed=${Date.now()}&model=flux&nologo=true`;
+  const seed = Date.now();
+  const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&seed=${seed}&model=flux&nologo=true`;
   
-  console.log('Görsel oluşturuluyor:', imageUrl);
+  console.log('Görsel URL\'si oluşturuldu:', imageUrl);
   
-  // Görselin base64 verisini al
-  const response = await axios.get(imageUrl, {
-    responseType: 'arraybuffer',
-    timeout: 60000
-  });
+  // Pollinations.ai görseli arka planda üretir, URL direkt kullanılabilir
+  // Pinterest için beklemeden URL'yi döndürüyoruz
+  
+  // Opsiyonel: Görselin hazır olup olmadığını kontrol et
+  try {
+    console.log('Görsel hazır mı kontrol ediliyor...');
+    await axios.head(imageUrl, { 
+      timeout: 10000,
+      maxRedirects: 5
+    });
+    console.log('✅ Görsel hazır!');
+  } catch (error) {
+    console.log('⏳ Görsel hala üretiliyor, URL yine de kullanılabilir');
+  }
   
   return {
     url: imageUrl,
-    buffer: Buffer.from(response.data, 'binary')
+    buffer: null // Buffer'a ihtiyacımız yok, direkt URL kullanıyoruz
   };
 }
 
