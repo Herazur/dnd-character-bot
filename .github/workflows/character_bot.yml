@@ -32,5 +32,6 @@ jobs:
     - name: Generate and Post Character via IFTTT
       env:
         IFTTT_KEY: ${{ secrets.IFTTT_KEY }}
+        IFTTT_EVENT_NAME: ${{ secrets.IFTTT_EVENT_NAME }}
       run: |
         python character_generator.py
