@@ -1,0 +1,37 @@
+name: Generate D&D Character Art
+
+on:
+  schedule:
+    # Her 6 saatte bir çalışır (günde 4 karakter)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Manuel tetikleme için
+
+jobs:
+  generate-and-post:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: |
+        npm install axios form-data
+    
+    - name: Generate and Post Character
+      env:
+        IFTTT_KEY: ${{ secrets.IFTTT_KEY }}
+      run: node generate-character.js
+      
+    - name: Save generation log
+      run: |
+        git config --global user.name 'Character Bot'
+        git config --global user.email 'bot@example.com'
+        git add logs/*.json || true
+        git commit -m "Generated character $(date +'%Y-%m-%d %H:%M')" || true
+        git push || true
