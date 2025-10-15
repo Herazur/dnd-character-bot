@@ -91,13 +91,15 @@ async function generateImage(prompt) {
 // IFTTT webhook ile Pinterest'e gönder
 async function postToPinterest(imageUrl, title, description) {
   const iftttKey = process.env.IFTTT_KEY;
+  const iftttEvent = process.env.IFTTT_EVENT || 'post_to_pinterest';
   
   if (!iftttKey) {
     console.error('IFTTT_KEY bulunamadı!');
     return false;
   }
   
-  const webhookUrl = `https://maker.ifttt.com/trigger/post_to_pinterest/with/key/${iftttKey}`;
+  const webhookUrl = `https://maker.ifttt.com/trigger/${iftttEvent}/with/key/${iftttKey}`;
+  console.log('IFTTT Event:', iftttEvent);
   
   // Pinterest için kısa açıklama (500 karakter limit)
   const shortDescription = description.length > 500 
