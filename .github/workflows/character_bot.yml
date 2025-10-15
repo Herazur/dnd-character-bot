@@ -29,16 +29,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
     
-    - name: Generate and Post Character via Zapier
-      env:
-        ZAPIER_WEBHOOK_URL: ${{ secrets.ZAPIER_WEBHOOK_URL }}
-      run: |
-        python character_generator_zapier.py
-      continue-on-error: true
-    
-    - name: Generate and Post Character via IFTTT (Fallback)
+    - name: Generate and Post Character via IFTTT
       env:
         IFTTT_KEY: ${{ secrets.IFTTT_KEY }}
       run: |
         python character_generator.py
-      continue-on-error: true
