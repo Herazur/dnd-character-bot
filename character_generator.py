@@ -136,23 +136,31 @@ class DnDCharacterBot:
         webhook_url = f"https://maker.ifttt.com/trigger/{self.ifttt_event}/with/key/{self.ifttt_key}"
         
         # Pinterest için description hazırla
-        hashtags = "\n\n#DnD #RPG #FantasyArt #CharacterArt #DigitalArt #DungeonsAndDragons #TabletopGaming"
-        description = f"{prompt[:450]}{hashtags}"
+        hashtags = "\n\n#DnD #RPG #FantasyArt #CharacterArt #DigitalArt #DungeonsAndDragons"
+        description = f"{character_name} - {prompt[:400]}{hashtags}"
         
-        # IFTTT'ye gönderilecek veri - Pinterest Create Pin format
+        # IFTTT'ye gönderilecek veri - BASİTLEŞTİRİLMİŞ FORMAT
         data = {
-            'value1': image_url,           # Image URL (value1)
-            'value2': character_name,      # Title (value2)
-            'value3': description          # Description (value3)
+            'value1': image_url,           # Photo URL
+            'value2': character_name,      # Pin Title (kısa)
+            'value3': description[:500]    # Pin Description (limit 500)
         }
         
         try:
+            print(f"📤 IFTTT'ye gönderiliyor...")
             response = requests.post(webhook_url, json=data, timeout=30)
-            response.raise_for_status()
-            print(f"✓ Pinterest'e gönderildi: {character_name}")
-            return True
+            
+            if response.status_code == 200:
+                print(f"✓ IFTTT webhook tetiklendi!")
+                print(f"✓ Pinterest'e gönderildi: {character_name}")
+                return True
+            else:
+                print(f"✗ IFTTT hatası: HTTP {response.status_code}")
+                print(f"✗ Yanıt: {response.text[:200]}")
+                return False
+                
         except Exception as e:
-            print(f"✗ Pinterest paylaşım hatası: {e}")
+            print(f"✗ IFTTT paylaşım hatası: {e}")
             return False
 
     def run(self):
