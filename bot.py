@@ -1,12 +1,16 @@
 import requests
 import random
 import os
-import time
-from datetime import datetime
 
 class DnDCharacterBot:
     def __init__(self):
-        self.ifttt_webhook = os.environ.get('IFTTT_WEBHOOK_URL')
+        event = os.environ.get('IFTTT_EVENT_NAME')
+        key = os.environ.get('IFTTT_KEY')
+        
+        if not event or not key:
+            raise ValueError("❌ IFTTT_EVENT_NAME veya IFTTT_KEY bulunamadı! Secrets ayarlarını kontrol edin.")
+
+        self.ifttt_webhook = f"https://maker.ifttt.com/trigger/{event}/json/with/key/{key}"
         
         self.races = [
             'Elf', 'Dwarf', 'Human', 'Halfling', 'Dragonborn', 
@@ -71,14 +75,9 @@ class DnDCharacterBot:
     
     def send_to_ifttt(self, data):
         """IFTTT Webhook'una gönder"""
-        if not self.ifttt_webhook:
-            print("❌ IFTTT_WEBHOOK_URL bulunamadı!")
-            return False
-        
         try:
             print("📤 IFTTT'ye gönderiliyor...")
 
-            # IFTTT genelde value1, value2, value3 alanlarını bekler
             payload = {
                 "value1": data['title'],
                 "value2": data['image_url'],
@@ -111,7 +110,6 @@ class DnDCharacterBot:
             return False
     
     def run(self):
-        """Ana bot çalıştırma fonksiyonu"""
         print("=" * 70)
         print("🎲 D&D KARAKTER PORTRE BOTU - IFTTT ENTEGRASYONU")
         print("=" * 70)
