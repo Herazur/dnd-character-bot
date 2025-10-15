@@ -1,1 +1,1 @@
-# binance-square-bot
+# dnd-character-bot
