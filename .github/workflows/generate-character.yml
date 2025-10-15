@@ -26,6 +26,7 @@ jobs:
     - name: Generate and Post Character
       env:
         IFTTT_KEY: ${{ secrets.IFTTT_KEY }}
+        IFTTT_EVENT: ${{ secrets.IFTTT_EVENT }}
       run: node generate-character.js
       
     - name: Save generation log
