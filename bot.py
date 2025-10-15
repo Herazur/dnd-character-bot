@@ -1,6 +1,7 @@
 import requests
 import random
 import os
+import urllib.parse
 
 class DnDCharacterBot:
     def __init__(self):
@@ -56,7 +57,7 @@ class DnDCharacterBot:
         )
         
         seed = random.randint(1, 1000000)
-        encoded_prompt = requests.utils.quote(prompt)
+        encoded_prompt = urllib.parse.quote(prompt)
         image_url = (
             f"https://image.pollinations.ai/prompt/{encoded_prompt}"
             f"?width=768&height=1024&seed={seed}&nologo=true"
@@ -78,11 +79,17 @@ class DnDCharacterBot:
         try:
             print("📤 IFTTT'ye gönderiliyor...")
 
+            # JSON payload'ını düzelt - doğrudan değerleri kullan
             payload = {
                 "value1": data['title'],
                 "value2": data['image_url'],
                 "value3": data['description']
             }
+
+            print(f"📊 Gönderilen veriler:")
+            print(f"   Başlık: {data['title']}")
+            print(f"   Görsel URL: {data['image_url']}")
+            print(f"   Açıklama: {data['description'][:100]}...")
 
             response = requests.post(
                 self.ifttt_webhook,
@@ -139,5 +146,8 @@ class DnDCharacterBot:
 
 
 if __name__ == "__main__":
-    bot = DnDCharacterBot()
-    bot.run()
+    try:
+        bot = DnDCharacterBot()
+        bot.run()
+    except Exception as e:
+        print(f"❌ Bot çalıştırılırken hata oluştu: {e}")
