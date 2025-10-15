@@ -67,39 +67,59 @@ class DnDCharacterBot:
         encoded_prompt = requests.utils.quote(prompt)
         
         # Görsel parametreleri
-        params = {
-            'width': '768',
-            'height': '1024',
-            'seed': random.randint(1, 1000000),
-            'nologo': 'true',
-            'enhance': 'true'
-        }
+        seed = random.randint(1, 1000000)
         
-        # Tam URL oluştur
-        image_url = f"{base_url}{encoded_prompt}"
-        param_string = "&".join([f"{k}={v}" for k, v in params.items()])
-        full_url = f"{image_url}?{param_string}"
+        # Basitleştirilmiş URL (parametreler olmadan daha stabil)
+        image_url = f"{base_url}{encoded_prompt}?width=768&height=1024&seed={seed}&nologo=true"
         
-        print(f"Görsel oluşturuluyor: {full_url[:100]}...")
+        print(f"Görsel URL'si: {image_url[:100]}...")
         
         try:
-            # Görseli indir
-            response = requests.get(full_url, timeout=60)
-            response.raise_for_status()
+            # Görseli kontrol et (HEAD request ile hızlı)
+            print(f"Görsel kontrol ediliyor...")
             
-            # Dosya olarak kaydet
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            filename = f"character_{timestamp}.png"
+            # Basit GET request - timeout ve retry ile
+            for attempt in range(3):
+                try:
+                    response = requests.get(image_url, timeout=30)
+                    
+                    if response.status_code == 200:
+                        # Dosya olarak kaydet
+                        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                        filename = f"character_{timestamp}.png"
+                        
+                        with open(filename, 'wb') as f:
+                            f.write(response.content)
+                        
+                        print(f"✓ Görsel başarıyla oluşturuldu")
+                        print(f"✓ Dosya: {filename}")
+                        return filename, image_url
+                    
+                    elif response.status_code == 502:
+                        print(f"⚠ Deneme {attempt + 1}/3: Sunucu geçici olarak meşgul, bekleniyor...")
+                        time.sleep(5)
+                        continue
+                    else:
+                        print(f"⚠ HTTP {response.status_code}, tekrar deneniyor...")
+                        time.sleep(3)
+                        continue
+                        
+                except requests.exceptions.Timeout:
+                    print(f"⚠ Deneme {attempt + 1}/3: Zaman aşımı, tekrar deneniyor...")
+                    time.sleep(5)
+                    continue
+                except requests.exceptions.RequestException as e:
+                    print(f"⚠ Deneme {attempt + 1}/3: Bağlantı hatası ({e}), tekrar deneniyor...")
+                    time.sleep(5)
+                    continue
             
-            with open(filename, 'wb') as f:
-                f.write(response.content)
-            
-            print(f"✓ Görsel kaydedildi: {filename}")
-            return filename, full_url
+            # 3 deneme sonrası başarısız
+            print(f"✗ 3 denemeden sonra görsel oluşturulamadı")
+            return None, image_url  # URL'yi yine de döndür, belki çalışıyordur
             
         except Exception as e:
-            print(f"✗ Görsel oluşturma hatası: {e}")
-            return None, None
+            print(f"✗ Beklenmeyen hata: {e}")
+            return None, image_url
 
     def upload_to_imgur(self, image_path):
         """Imgur'a görsel yükler (opsiyonel, IFTTT için URL gerekiyorsa)"""
@@ -154,9 +174,9 @@ class DnDCharacterBot:
             print("\n✗ Bot çalıştırması başarısız!")
             return False
         
-        # Pinterest'e paylaş
+        # URL varsa devam et (dosya olmasa bile)
         print(f"\n📌 Pinterest'e paylaşılıyor...")
-        time.sleep(2)  # API rate limit için bekleme
+        time.sleep(3)  # API rate limit için bekleme
         success = self.post_to_pinterest(image_url, character_name, prompt)
         
         if success:
@@ -165,7 +185,8 @@ class DnDCharacterBot:
             print("=" * 60)
             return True
         else:
-            print("\n✗ Paylaşım başarısız!")
+            print("\n⚠ Pinterest paylaşımı yapılamadı, ama görsel hazır:")
+            print(f"🔗 {image_url}")
             return False
 
 
