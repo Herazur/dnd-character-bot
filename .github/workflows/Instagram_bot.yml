@@ -1,0 +1,22 @@
+name: D&D Character Portrait Bot
+
+on:
+  schedule:
+    - cron: '0 15 * * 1-5'  # 11:00 AM ET (Weekdays)
+    - cron: '0 23 * * 1-5'  # 7:00 PM ET (Weekdays)
+  workflow_dispatch:
+
+jobs:
+  post-character:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - run: pip install instagrapi pillow requests
+    - run: python instagram_bot.py
+      env:
+        INSTAGRAM_USERNAME: ${{ secrets.INSTAGRAM_USERNAME }}
+        INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
+        INSTAGRAM_SESSION_B64: ${{ secrets.INSTAGRAM_SESSION_B64 }}
