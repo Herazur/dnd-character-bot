@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-10-20T12:28:22.074Z",
+  "character": {
+    "prompt": "A rugged female Tiefling Sorcerer, detailed oil painting style, in a castle, highly detailed face, dramatic lighting, professional quality, 4k, masterpiece",
+    "race": "Tiefling",
+    "class": "Sorcerer",
+    "gender": "female",
+    "attribute": "rugged",
+    "title": "Rugged Tiefling Sorcerer"
+  },
+  "imageUrl": "https://image.pollinations.ai/prompt/A%20rugged%20female%20Tiefling%20Sorcerer%2C%20detailed%20oil%20painting%20style%2C%20in%20a%20castle%2C%20highly%20detailed%20face%2C%20dramatic%20lighting%2C%20professional%20quality%2C%204k%2C%20masterpiece?width=1024&height=1024&seed=1760963295765&model=flux&nologo=true",
+  "success": true,
+  "posted_to_pinterest": true
+}
