@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-10-21T18:18:32.810Z",
+  "character": {
+    "prompt": "A charismatic male Human Sorcerer, detailed oil painting style, on a mountain peak, highly detailed face, dramatic lighting, professional quality, 4k, masterpiece",
+    "race": "Human",
+    "class": "Sorcerer",
+    "gender": "male",
+    "attribute": "charismatic",
+    "title": "Charismatic Human Sorcerer"
+  },
+  "imageUrl": "https://image.pollinations.ai/prompt/A%20charismatic%20male%20Human%20Sorcerer%2C%20detailed%20oil%20painting%20style%2C%20on%20a%20mountain%20peak%2C%20highly%20detailed%20face%2C%20dramatic%20lighting%2C%20professional%20quality%2C%204k%2C%20masterpiece?width=1024&height=1024&seed=1761070711050&model=flux&nologo=true",
+  "success": true,
+  "posted_to_pinterest": true
+}
