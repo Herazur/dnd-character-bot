@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-10-27T01:07:47.516Z",
+  "character": {
+    "prompt": "A mystical male Goliath Druid, detailed oil painting style, in a castle, highly detailed face, dramatic lighting, professional quality, 4k, masterpiece",
+    "race": "Goliath",
+    "class": "Druid",
+    "gender": "male",
+    "attribute": "mystical",
+    "title": "Mystical Goliath Druid"
+  },
+  "imageUrl": "https://image.pollinations.ai/prompt/A%20mystical%20male%20Goliath%20Druid%2C%20detailed%20oil%20painting%20style%2C%20in%20a%20castle%2C%20highly%20detailed%20face%2C%20dramatic%20lighting%2C%20professional%20quality%2C%204k%2C%20masterpiece?width=1024&height=1024&seed=1761527265235&model=flux&nologo=true",
+  "success": true,
+  "posted_to_pinterest": true
+}
